@@ -7,7 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# dependencies
+frontend-side/node_modules
+server-side/node_modules
+frontend-side/.env
+server-side/.env
+server-side/config.js
+
 .DS_Store
 dist
 dist-ssr
