@@ -3,6 +3,21 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ENV from "../config.js";
 
+/** middleware for verify user */
+export async function verifyUser(req, res, next) {
+    try {
+        const { username } = req.method == "GET" ? req.query : req.body;
+
+        let exist = await UserModel.findOne({ username });
+        if (!exist) return res.status(400).json({ error: "User not found!" });
+
+        next();
+    } catch (error) {
+        return res.status(401).json({ error: "Unauthorized." });
+    }
+}
+
+//todo : eksik bilgi gönderilmesi durumlarına aksiyon al
 /** POST: http://localhost:8080/api/register
  * @params : {
   "username": "example123",
@@ -19,17 +34,17 @@ export async function register(req, res) {
         const { username, password, email, profile } = req.body;
 
         // Check for username
-        const existingUsername = await UserModel.findOne({ username }).exec();
+        const existingUsername = await UserModel.findOne({ username });
 
         if (existingUsername) {
-            return res.status(400).json({ error: "Please use a unique username." });
+            return res.status(400).json({ error: "Please use a valid username." });
         }
 
         // Check for email
-        const existingEmail = await UserModel.findOne({ email }).exec();
+        const existingEmail = await UserModel.findOne({ email });
 
         if (existingEmail) {
-            return res.status(400).json({ error: "Please use a unique email." });
+            return res.status(400).json({ error: "Please use a valid email." });
         }
 
         // Hash the password
@@ -66,14 +81,14 @@ export async function login(req, res) {
         const user = await UserModel.findOne({ username }).exec();
 
         if (!user) {
-            return res.status(400).json({ error: "Username does not exist." });
+            return res.status(400).json({ error: "Username or password is incorrect." });
         }
 
         // Check for password
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
-            return res.status(400).json({ error: "Password is incorrect." });
+            return res.status(400).json({ error: "Username or password is incorrect." });
         }
 
         // Create JWT token
@@ -97,29 +112,53 @@ export async function login(req, res) {
     }
 }
 
-
-
 /** GET: http://localhost:8080/api/user/example123 */
 export async function getUser(req, res){
-    res.json('getUser route');
+    const { username } = req.params;
+    try {
+        const user = await UserModel.findOne({ username });
+        
+        if (!user) return res.status(404).send("User not found.");
+
+        // mongoose return unnecessary data with object so convert it into json
+        const { password, ...rest } = Object.assign({}, user.toJSON());
+
+        return res.status(200).json(rest);
+   
+    } catch (error) {
+        return res.status(404).send("User data not found.");
+    } 
 }
 
 /** PUT: http://localhost:8080/api/updateUser
  * @params : {
-    "id" : "example123",
-}
-body:  {
     "firstName": "",
     profile: ""
 } 
 */
 export async function updateUser(req, res){
-    res.json('updateUser route');
+    try {
+        
+        //const id = req.query.id;
+        const { userId } = req.user;
+
+        if(userId){
+            const body = req.body;
+            const user = await UserModel.findOneAndUpdate({_id: userId}, body, {new: true});
+            return res.status(200).json(user);
+        }
+        else{
+            return res.status(404).json({ error: "User id not found." });
+        }
+
+    } catch (error) {
+        return res.status(401).json({ error });
+    }
 }
 
 /** GET: http://localhost:8080/api/generateOTP */
 export async function generateOTP(req, res){
-    res.json('generateOTP route');
+    
 }
 
 /** GET: http://localhost:8080/api/verifyOTP */
