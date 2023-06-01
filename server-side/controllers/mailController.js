@@ -17,12 +17,12 @@ let transporter = nodemailer.createTransport(nodeConfig);
 let mailGenerator = new Mailgen({
     theme: 'default',
     product: {
-        name: 'Mailgen',
-        link: 'https://cookbook.com'
+        name: 'sefaburak.dev',
+        link: 'sefaburak.dev'
     }
 })
 
-/** PUT: http://localhost:8080/api/registerMail
+/** POST: http://localhost:8080/api/registerMail
  * @params : {
   "username": "example123",
   "userEmail": "burakdereli05@gmail.com",
