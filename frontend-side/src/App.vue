@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Header from './components/headers/Header.vue';
 </script>
 
@@ -7,5 +7,5 @@ import Header from './components/headers/Header.vue';
   <header>
     <Header/>
   </header>
-  <RouterView />
+  <RouterView class="overflow-hidden" />
 </template>

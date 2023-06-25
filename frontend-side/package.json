@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "flowbite": "^1.6.5",
     "vue": "^3.3.2",
     "vue-router": "^4.2.0",
     "vue3-dropdown-navbar": "^0.1.3"

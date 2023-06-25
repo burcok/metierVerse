@@ -6,26 +6,31 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/landingPage.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
+      path: '/discover',
+      name: 'discover',
+      component: () => import('../views/pages/Discover.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Login.vue')
+      component: () => import('../views/auth/Login.vue')
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('../views/Register.vue')
+      component: () => import('../views/auth/Register.vue')
+    },
+    {
+      path: '/resetpassword',
+      name: 'resetPassword',
+      component: () => import('../views/auth/resetPassword.vue')
     },
     {
       path: '/:pathMatch(.*)',
-      component: () => import('../views/PageNotFound.vue')
+      component: () => import('../views/pageNotFound.vue')
     },
   ]
 })

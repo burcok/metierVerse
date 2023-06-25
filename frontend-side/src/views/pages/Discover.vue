@@ -1,6 +1,6 @@
 <template>
   <div>
-    about page
+    discover page
   </div>
 </template>
 
