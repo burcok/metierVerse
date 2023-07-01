@@ -8,8 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.7.0",
+    "axios": "^1.4.0",
     "flowbite": "^1.6.5",
     "vue": "^3.3.2",
+    "vue-cookies": "^1.8.3",
     "vue-router": "^4.2.0",
     "vue3-dropdown-navbar": "^0.1.3"
   },
