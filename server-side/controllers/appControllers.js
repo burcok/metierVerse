@@ -7,9 +7,9 @@ import ENV from "../config.js";
 /** middleware for verify user */
 export async function verifyUser(req, res, next) {
     try {
-        const { username } = req.method == "GET" ? req.query : req.body;
+        const { email } = req.method == "GET" ? req.query : req.body;
 
-        let exist = await UserModel.findOne({ username });
+        let exist = await UserModel.findOne({ email });
         if (!exist) return res.status(400).json({ error: "User not found!" });
 
         next();
@@ -76,10 +76,10 @@ export async function register(req, res) {
 }
 */
 export async function login(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
         // Check for username
-        const user = await UserModel.findOne({ username }).exec();
+        const user = await UserModel.findOne({ email }).exec();
 
         if (!user) {
             return res.status(400).json({ error: "Username or password is incorrect." });
