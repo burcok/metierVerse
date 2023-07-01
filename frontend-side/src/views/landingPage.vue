@@ -1,5 +1,5 @@
 <script setup>
-import landingBanner from '../components/containers/landingBanner.vue';
+import landingBanner from '../components/containers/landing/landingBanner.vue';
 </script>
 
 <template>
