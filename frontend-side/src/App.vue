@@ -1,22 +1,39 @@
 <script setup>
-import { ref } from 'vue';
-import { RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { RouterView } from 'vue-router';
 import Header from './components/headers/Header.vue';
 import notificationComponent from './components/containers/notification/notificationComponent.vue';
-const notificationData = ref()
+import { isUserLoggedIn } from './utils/isUserLoggedIn.js';
+
+const notificationData = ref();
+const loading = ref(true);
+const currentUserData = ref();
+
 const isNotificationFunction = (data) => {
-  notificationData.value = data
-}
+  notificationData.value = data;
+};
+
+onMounted(async () => {
+  currentUserData.value = await isUserLoggedIn()
+  loading.value = false
+});
 </script>
 
 <template>
-  <div>
-    <header>
-      <Header/>
-    </header>
+  <template v-if="!loading">
     <div>
-      <RouterView @isNotification="isNotificationFunction" class="overflow-hidden" />
+      <header>
+        <Header />
+      </header>
+      <div>
+        <RouterView @isNotification="isNotificationFunction" :currentUserData="currentUserData" class="overflow-hidden" />
+      </div>
+      <notificationComponent :isNotificationFunction="notificationData" />
     </div>
-    <notificationComponent :isNotificationFunction="notificationData" />
-  </div>
+  </template>
+  <template v-else>
+    <div>
+      Loading...
+    </div>
+  </template>
 </template>
