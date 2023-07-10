@@ -59,6 +59,16 @@ const onLogin = async () => {
     await axios.post("http://localhost:8080/api/login", data)
     .then((result) => {
         VueCookies.set('jwtToken' , result.data.token, "1h")
+
+        // Initialize session data
+        const sessionData = {
+            token: result.data.token,
+            username: result.data.username
+        };
+
+        // Save session data in local storage or Vuex store for access throughout the app
+        localStorage.setItem('sessionData', JSON.stringify(sessionData));
+
         emit('isNotification', {
             notificationType: "succes",
             notificationMessage: result.data.message + " " + result.data.username
